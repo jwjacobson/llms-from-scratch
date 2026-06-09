@@ -16,6 +16,8 @@ file_path = "the-verdict.txt"
 with open(file_path, "r", encoding="utf-8") as f:
     raw_text = f.read()
 
+preprocessed = re.split(r'([,.:;?_!"()\']|--|\s)', raw_text)
+preprocessed = [item.strip() for item in preprocessed if item.strip()]
 
 # Add tokens to vocabulary with int IDs
 all_words = sorted(set(preprocessed))
@@ -36,6 +38,15 @@ class Tokenizer:
 
     def decode(self, ids):
         text = " ".join([self.int_to_str[i] for i in ids])
-        text = re.sub(r'\s+([,.?!"()\'])', r'\l', text)
+        text = re.sub(r'\s+([,.?!"()\'])', r'\1', text)
 
         return text
+
+
+tokenizer = Tokenizer(vocab)
+text = """
+"It's the last he painted, you know," Mrs. Gisburn said with pardonable pride.
+"""
+ids = tokenizer.encode(text)
+print(ids)
+print(tokenizer.decode(ids))
