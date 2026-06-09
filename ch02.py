@@ -1,7 +1,7 @@
 # Tokenizing a text file
 # Optional: retrieve the file ("The Verdict" by Edith Wharton)
 # import urllib.request
-# 
+
 # url = ("https://raw.githubusercontent.com/rasbt/"
 #         "LLMs-from-scratch/main/ch02/01_main-chapter-code/"
 #         "the-verdict.txt"
@@ -16,7 +16,26 @@ file_path = "the-verdict.txt"
 with open(file_path, "r", encoding="utf-8") as f:
     raw_text = f.read()
 
-# Remove punctuation and whitespace
-preprocessed = re.split(r'([,.:;?_!"()\']|--|\s)', raw_text)
-preprocessed = [item.strip() for item in preprocessed if item.strip()]
 
+# Add tokens to vocabulary with int IDs
+all_words = sorted(set(preprocessed))
+vocab = {token:integer for integer, token in enumerate(all_words)}
+
+
+class Tokenizer:
+    def __init__(self, vocab):
+        self.str_to_int = vocab
+        self.int_to_str = {i:s for s,i in vocab.items()}
+
+    def encode(self, text):
+        preprocessed = re.split(r'([,.:;?_!"()\']|--|\s)', text)
+        preprocessed = [item.strip() for item in preprocessed if item.strip()]
+        ids = [self.str_to_int[s] for s in preprocessed]
+
+        return ids
+
+    def decode(self, ids):
+        text = " ".join([self.int_to_str[i] for i in ids])
+        text = re.sub(r'\s+([,.?!"()\'])', r'\l', text)
+
+        return text
