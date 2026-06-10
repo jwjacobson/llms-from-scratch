@@ -7,6 +7,7 @@
 #         "the-verdict.txt"
 # )
 
+import tiktoken
 import re
 
 file_path = "the-verdict.txt"
@@ -46,8 +47,24 @@ class Tokenizer:
         return text
 
 
-tokenizer = Tokenizer(vocab)
-text1 = "Hello, do you like tea?"
-text2 = "In the sunlit terraces of the palace."
-text = " <|endoftext|> ".join((text1, text2))
-print(tokenizer.decode(tokenizer.encode(text)))
+# Verify tokenizer behavior with unknown words
+# tokenizer = Tokenizer(vocab)
+# text1 = "Hello, do you like tea?"
+# text2 = "In the sunlit terraces of the palace."
+# text = " <|endoftext|> ".join((text1, text2))
+# print(tokenizer.decode(tokenizer.encode(text)))
+
+tokenizer = tiktoken.get_encoding("gpt2")
+
+text = (
+    "Hello, do you like tea? <|endoftext|> In the sunlit terraces"
+    "of someunknownPlace."
+)
+# integers = tokenizer.encode(text, allowed_special={"<|endoftext|>"})
+# strings = tokenizer.decode(integers)
+# print(strings)
+
+text2 = "Akwirw ier"
+new_tokens = tokenizer.encode(text2)
+for token in new_tokens:
+    print(tokenizer.decode([token]))
