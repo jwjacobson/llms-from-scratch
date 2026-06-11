@@ -3,6 +3,7 @@
 In this repo I'll be working through Sebastian Raschka's book. The code is mostly typed verbatim from his book, with minor adjustments.
 
 [The book](https://www.manning.com/books/build-a-large-language-model-from-scratch)
+
 [Companion repo](https://github.com/rasbt/LLMs-from-scratch)
 
 ### License
